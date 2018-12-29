@@ -26,7 +26,6 @@ displayErr() {
     output " "
     output "Make sure you double check before hitting enter! Only one shot at these!"
     output " "
-    read -e -p "Enter time zone (e.g. America/New_York) : " TIME
     read -e -p "Server name (no http:// or www. just : example.com or pool.example.com) : " server_name
     read -e -p "Are you using a subdomain (pool.example.com?) [y/N] : " sub_domain
     read -e -p "Enter support email (e.g. admin@example.com) : " EMAIL
@@ -328,23 +327,6 @@ exec bash
 ' | sudo -E tee /var/stratum/config/run.sh >/dev/null 2>&1
     sudo chmod +x /var/stratum/config/run.sh
 
-
-    # Update Timezone
-    output " "
-    output "Update default timezone."
-    output " "
-    
-    # Check if link file
-    sudo [ -L /etc/localtime ] &&  sudo unlink /etc/localtime
-    
-    # Update time zone
-    sudo ln -sf /usr/share/zoneinfo/$TIME /etc/localtime
-    sudo aptitude -y install ntpdate
-    
-    # Write time to clock.
-    sudo hwclock -w
-    
-    
     # Making Web Server Magic Happen
     output " "
     output "Making Web Server Magic Happen!"
